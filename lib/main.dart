@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:provider_tutorial/counter_page.dart';
+import 'package:provider_tutorial/change_notifiers/counter_model.dart';
 
 void main() {
   runApp(
-    const MainApp(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CounterModel(0),
+        ),
+        ProxyProvider<CounterModel, Translation>(
+          update: (context, counterModel, translation) =>
+              Translation('You pressed ${counterModel.count} times'),
+        ),
+      ],
+      child: const MainApp(),
+    ),
   );
 }
 
-class MainApp extends StatefulWidget {
+class MainApp extends StatelessWidget {
   const MainApp({super.key});
-
-  @override
-  State<MainApp> createState() => _MainAppState();
-}
-
-class _MainAppState extends State<MainApp> {
-  int count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,26 +28,13 @@ class _MainAppState extends State<MainApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
-          child: MultiProvider(
-            providers: [
-              ProxyProvider0<int>(
-                update: (context, _) => count,
-                child: const CounterPage(),
-              ),
-              ProxyProvider<int, Translation>(
-                update: (context, count, _) {
-                  return Translation('You pressed $count times');
-                },
-              ),
-            ],
-            child: const CounterPage(),
+          child: Text(
+            Provider.of<Translation>(context).text,
           ),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            setState(() {
-              count++;
-            });
+            Provider.of<CounterModel>(context, listen: false).increment();
           },
           child: const Icon(Icons.add),
         ),

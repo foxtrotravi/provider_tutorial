@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider_tutorial/providers/counter_provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    Provider(
+      create: (context) => const Counter(0),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,10 +16,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    final count = Provider.of<Counter>(context).count.toString();
+
+    return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: Text('Hello World!'),
+          child: Text(count),
         ),
       ),
     );

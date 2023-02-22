@@ -7,7 +7,7 @@ class CounterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final count = Provider.of<Translation>(context);
-    return Text(count.toString());
+    final count = Provider.of<Translation>(context).text;
+    return Text(count);
   }
 }

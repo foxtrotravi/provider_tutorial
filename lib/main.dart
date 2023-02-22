@@ -21,6 +21,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
           child: MultiProvider(
@@ -52,10 +53,7 @@ class _MainAppState extends State<MainApp> {
 }
 
 class Translation {
-  final String text;
-
-  Translation(this.text);
-
-  @override
-  String toString() => text;
+  final String _text;
+  const Translation(this._text);
+  String get text => _text;
 }

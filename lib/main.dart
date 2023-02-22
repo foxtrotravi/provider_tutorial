@@ -23,8 +23,18 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       home: Scaffold(
         body: Center(
-          child: ProxyProvider0<int>(
-            update: (context, _) => count,
+          child: MultiProvider(
+            providers: [
+              ProxyProvider0<int>(
+                update: (context, _) => count,
+                child: const CounterPage(),
+              ),
+              ProxyProvider<int, Translation>(
+                update: (context, count, _) {
+                  return Translation('You pressed $count times');
+                },
+              ),
+            ],
             child: const CounterPage(),
           ),
         ),
@@ -39,4 +49,13 @@ class _MainAppState extends State<MainApp> {
       ),
     );
   }
+}
+
+class Translation {
+  final String text;
+
+  Translation(this.text);
+
+  @override
+  String toString() => text;
 }
